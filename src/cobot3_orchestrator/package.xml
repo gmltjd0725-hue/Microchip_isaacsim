@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>cobot3_orchestrator</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="maymayko9559@gmail.com">may</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>py_trees</depend>
+  <depend>cobot3_interfaces</depend>
+  <depend>std_srvs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>python3-yaml</depend>
+  <depend>rcl_interfaces</depend>
+  <depend>nav2_msgs</depend>
+  <depend>action_msgs</depend>
+
+  <!-- event_logger 의 PostgreSQL 클라이언트.
+       우분투 24.04 는 PEP 668 로 pip 설치가 막히므로 apt 로 깐다:
+           sudo apt install python3-psycopg2 -->
+  <exec_depend>python3-psycopg2</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

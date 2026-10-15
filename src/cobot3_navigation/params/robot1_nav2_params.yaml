@@ -1,0 +1,664 @@
+docking_server:
+  ros__parameters:
+    use_sim_time: true
+
+    controller_frequency: 50.0
+    initial_perception_timeout: 5.0
+    wait_charge_timeout: 5.0
+    dock_approach_timeout: 30.0
+
+    undock_linear_tolerance: 0.05
+    undock_angular_tolerance: 0.1
+    max_retries: 3
+
+    base_frame: "base_link"
+    fixed_frame: "odom"
+
+    dock_prestaging_tolerance: 0.5
+
+    dock_plugins: ["simple_charging_dock"]
+
+    simple_charging_dock:
+      plugin: "opennav_docking::SimpleChargingDock"
+
+      docking_threshold: 0.05
+      staging_x_offset: -0.7
+
+      use_external_detection_pose: true
+      use_battery_status: false
+      use_stall_detection: false
+
+      dock_direction: "forward"
+
+      external_detection_timeout: 1.0
+      external_detection_translation_x: -0.18
+      external_detection_translation_y: 0.0
+      external_detection_rotation_roll: -1.57
+      external_detection_rotation_pitch: -1.57
+      external_detection_rotation_yaw: 0.0
+
+      filter_coef: 0.1
+
+      controller:
+        k_phi: 3.0
+        k_delta: 2.0
+        v_linear_min: 0.15
+        v_linear_max: 0.15
+        use_collision_detection: true
+
+        costmap_topic: "local_costmap/costmap_raw"
+        footprint_topic: "local_costmap/published_footprint"
+
+        transform_tolerance: 0.1
+        projection_time: 5.0
+        simulation_step: 0.1
+        dock_collision_threshold: 0.3
+
+collision_monitor:
+  ros__parameters:
+    use_sim_time: true
+
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+
+    cmd_vel_in_topic: "cmd_vel_smoothed"
+    cmd_vel_out_topic: "cmd_vel"
+
+    state_topic: "collision_monitor_state"
+
+    transform_tolerance: 0.2
+    source_timeout: 1.0
+    base_shift_correction: true
+    stop_pub_timeout: 2.0
+
+    enable_stamped_cmd_vel: false
+
+    polygons: ["FootprintApproach"]
+
+    FootprintApproach:
+      type: "polygon"
+      action_type: "approach"
+      footprint_topic: "local_costmap/published_footprint"
+      time_before_collision: 1.2
+      simulation_time_step: 0.1
+      min_points: 6
+      visualize: true
+      enabled: true
+
+    observation_sources: ["scan"]
+
+    scan:
+      type: "scan"
+      topic: "/robot1/scan"
+      source_timeout: 0.5
+      enabled: true
+
+amcl:
+  ros__parameters:
+    use_sim_time: true
+
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+
+    base_frame_id: "base_link"
+    global_frame_id: "map"
+    odom_frame_id: "odom"
+
+    scan_topic: "/robot1/scan"
+    map_topic: "map"
+
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 100.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+
+    max_beams: 360
+    max_particles: 2000
+    min_particles: 500
+
+    pf_err: 0.05
+    pf_z: 0.99
+
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+
+    resample_interval: 3
+
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"
+
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+
+    tf_broadcast: true
+    transform_tolerance: 1.0
+
+    update_min_a: 0.03
+    update_min_d: 0.05
+
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+
+    set_initial_pose: true
+    always_reset_initial_pose: false
+    first_map_only: false
+
+    # ==========================================================
+    # ROBOT 1 START POSITION
+    # ★ simple_factory_layout.usda 의 nova_carter1 스폰을 WP_PICK 으로 옮기면서
+    #   (task_manager 를 patrol 없이 SCAN 부터 테스트하려고) 여기도 같이
+    #   맞췄다 — 안 맞추면 AMCL 이 처음부터 틀린 위치를 믿는다.
+    # ==========================================================
+    initial_pose:
+      x: 5.5
+      y: -6.59144
+      z: 0.0
+      yaw: 3.14159
+
+amcl_map_client:
+  ros__parameters:
+    use_sim_time: true
+
+
+amcl_rclcpp_node:
+  ros__parameters:
+    use_sim_time: true
+
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: true
+
+    global_frame: "map"
+    robot_base_frame: "base_link"
+
+    # 앞에 /를 붙이지 않음
+    # namespace 적용 후:
+    # /robot1/chassis/odom
+    odom_topic: "chassis/odom"
+
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    wait_for_service_timeout: 1000
+    action_server_result_timeout: 900.0
+
+    navigators:
+      - navigate_to_pose
+      - navigate_through_poses
+
+    navigate_to_pose:
+      plugin: "nav2_bt_navigator::NavigateToPoseNavigator"
+
+    navigate_through_poses:
+      plugin: "nav2_bt_navigator::NavigateThroughPosesNavigator"
+
+    error_code_names:
+      - compute_path_error_code
+      - follow_path_error_code
+
+
+controller_server:
+  ros__parameters:
+    use_sim_time: true
+
+    controller_frequency: 20.0
+    costmap_update_timeout: 0.30
+
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+
+    failure_tolerance: 0.3
+
+    progress_checker_plugins:
+      - progress_checker
+
+    goal_checker_plugins:
+      - general_goal_checker
+
+    controller_plugins:
+      - FollowPath
+
+    use_realtime_priority: false
+
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5
+      # ★ 2026-09-23: movement_time_allowance 10.0 -> 30.0.
+      #   SimpleProgressChecker 는 "XY 로 required_movement_radius 만큼
+      #   movement_time_allowance 안에 못 움직이면 goal 을 ABORT" 한다. 그런데
+      #   목표에서 최종 yaw 를 맞추는 제자리 회전은 XY 이동이 0 이다 — 회전하는
+      #   동안 이 검사기는 "안 움직인다" 로 본다.
+      #
+      #   d8c65b8 이 yaw_goal_tolerance 를 0.25 -> 0.05 (14.3° -> 2.9°)로 조이면서
+      #   그 회전이 길어졌고, 10 초 허용치를 넘겨 START 가 통째로 죽었다:
+      #       180° 회전 = 3.1416 rad / max_vel_theta 0.3 = 10.5 s  ★ 최대속도로도 초과
+      #       (robot2 의 waypoint_start theta 가 정확히 pi 다 — 확정 실패였다)
+      #        90° 회전 = 1.571 / 0.3 = 5.2 s + 가속한계·Oscillation 감쇠
+      #   조이기 전(0.25 rad)에는 회전이 금방 끝나 허용치 안에 들어왔다.
+      #
+      #   허용오차는 그대로 둔다 — 파지점 오차 29 mm 는 그 값이 번 것이다.
+      #   대신 정당한 최종 회전을 죽이지 않게 시간을 늘린다. 아래
+      #   max_vel_theta 를 올린 것과 짝이다.
+      #   ☞ 진짜 교착(벽에 박혀 못 움직임)은 30 초면 여전히 잡힌다.
+      movement_time_allowance: 30.0
+
+    general_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      stateful: true
+      xy_goal_tolerance: 0.1
+      # ★ 2026-09-23: 0.05(2.9°) -> 0.08(4.6°). d8c65b8 이 파지점 오차(140mm
+      #   -> 29mm) 를 위해 조인 값인데, 실측에서 이 tolerance 를 물리 시뮬(관성 ·
+      #   제어 주기)로 안정적으로 못 맞춰 최종 정렬이 계속 헌팅(제자리에서
+      #   왔다갔다) 하다가 DWB Oscillation critic 에 막혀 BLOCKED/ABORTED 로
+      #   죽는 사례가 반복됐다(로봇1 nav ABORTED, 로봇2 START 무한 대기).
+      #   0.08 로 살짝만 풀어 헌팅을 줄인다 — 파지 정확도는 일부 희생.
+      #   ☞ 그래도 헌팅/BLOCKED 가 반복되면 여기를 더 풀 것.
+      yaw_goal_tolerance: 0.08
+
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+
+      debug_trajectory_details: true
+
+      # 후진을 허용한다 — PATROL_ROUTE 왕복 중 한쪽 구간은 yaw=0(동쪽)을
+      # 유지한 채 서쪽으로 이동해야 하는데(task_manager.py 참고), 전진만
+      # 허용하면 그 구간에서 선반 바로 앞 제자리 180도 회전이 필요해진다.
+      # 그 회전 스윕 반경(0.66m)이 선반 여유(0.26~0.48m)보다 넓어서 계속
+      # BLOCKED/ABORTED 로 막히던 게 이거였다 — 후진을 허용하면 그 구간에서
+      # 아예 회전할 필요가 없어진다. nav_server 가 속도 프로파일마다
+      # min_vel_x 도 -max_vel_x 로 같이 눌러준다.
+      min_vel_x: -0.25
+      min_vel_y: 0.0
+
+      # 원래 NVIDIA 데모 값(0.8 / 0.7)은 개방된 창고 기준이라 빠르다. 선반 앞
+      # 구간(SHELF_ZONE)에서 손목 카메라로 QR 을 스캔하려면 베이스가 흔들림
+      # 없이 부드럽게 움직여야 해서 낮췄다 — carrier_code_reader.py 의 실시간
+      # QR 감시가 이 구간의 저속 주행을 전제로 한다.
+      max_vel_x: 0.25
+      max_vel_y: 0.0
+      # ★ 2026-09-23: 0.3 -> 0.6. 위 progress_checker 주석과 짝이다 — yaw 허용오차
+      #   2.9° 를 0.3 rad/s 로 맞추려니 최종 회전이 10 초를 넘겨 goal 이 죽었다.
+      #   acc_lim_theta 가 0.8 이라 0.6 은 0.75 초면 도달한다.
+      #   ☞ QR 스캔 저속 주행에는 영향이 없다 — 선반 앞 구간은 yaw 를 고정한 채
+      #     직진으로 지나가고(그래서 min_vel_x 로 후진을 허용한다), 저속을
+      #     거는 쪽은 max_vel_x(0.25) 다.
+      max_vel_theta: 0.6
+
+      min_speed_xy: 0.0
+      max_speed_xy: 0.25
+      # ★ 2026-09-23: 0.0 -> 0.1. 실측: RotateToGoal critic 이 목표 근처에서
+      #   slowing_factor(5.0)로 속도를 계속 줄이다가 angular.z 가 -0.03 rad/s
+      #   같은 값까지 떨어졌는데, 이 크기는 cmd_vel/cmd_vel_smoothed 로 계속
+      #   나가는데도 amcl_pose 가 소수점까지 그대로였다 — Isaac 물리(바퀴 정지
+      #   마찰)가 이 정도로 작은 명령은 실제로 못 움직인다. 그래서 로봇이
+      #   "거의 다 왔는데 마지막 한 뼘"에서 영원히 창짓만 하다가
+      #   movement_time_allowance(30s) 에 걸려 BLOCKED 로 죽었다(로봇1 nav,
+      #   로봇2 도 목표에 가까워지면 같은 증상 예상). 0.1 밑으로는 못 내게
+      #   막아서, 그 밑에서는 차라리 tolerance 안으로 보고 멈추게 한다.
+      min_speed_theta: 0.1
+
+      acc_lim_x: 0.4
+      acc_lim_y: 0.0
+      acc_lim_theta: 0.8
+
+      decel_lim_x: -0.4
+      decel_lim_y: 0.0
+      decel_lim_theta: -0.8
+
+      vx_samples: 20
+      vy_samples: 5
+      vtheta_samples: 20
+
+      sim_time: 1.7
+
+      linear_granularity: 0.05
+      angular_granularity: 0.025
+
+      transform_tolerance: 0.2
+
+      xy_goal_tolerance: 0.10
+      trans_stopped_velocity: 0.25
+
+      short_circuit_trajectory_evaluation: true
+      stateful: true
+
+      critics:
+        - RotateToGoal
+        - Oscillation
+        - BaseObstacle
+        - GoalAlign
+        - PathAlign
+        - PathDist
+        - GoalDist
+
+      BaseObstacle.scale: 0.02
+
+      PathAlign.scale: 32.0
+      PathAlign.forward_point_distance: 0.1
+
+      GoalAlign.scale: 24.0
+      GoalAlign.forward_point_distance: 0.1
+
+      PathDist.scale: 32.0
+      GoalDist.scale: 24.0
+
+      RotateToGoal.scale: 32.0
+      RotateToGoal.slowing_factor: 5.0
+      RotateToGoal.lookahead_time: -1.0
+
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      use_sim_time: true
+
+      global_frame: "odom"
+      robot_base_frame: "base_link"
+
+      update_frequency: 5.0
+      publish_frequency: 2.0
+
+      rolling_window: true
+
+      width: 6
+      height: 6
+      resolution: 0.05
+
+      transform_tolerance: 0.3
+
+      # 기존 Carter 값 그대로 사용
+      footprint: "[ [0.14, 0.25], [0.14, -0.25], [-0.607, -0.25], [-0.607, 0.25] ]"
+      footprint_padding: 0.03
+
+      always_send_full_costmap: true
+
+      plugins:
+        - static_layer
+        - obstacle_layer
+        - inflation_layer
+
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true
+        enabled: true
+
+      # ========================================================
+      # 3D LiDAR를 launch 파일에서 /scan으로 변환하여 사용
+      #
+      # robot1 namespace 적용 후:
+      # /robot1/scan
+      # ========================================================
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+
+        observation_sources: scan
+
+        scan:
+          topic: "/robot1/scan"
+
+          data_type: "LaserScan"
+
+          clearing: true
+          marking: true
+
+          max_obstacle_height: 2.0
+
+          obstacle_max_range: 3.0
+          obstacle_min_range: 0.05
+
+          raytrace_max_range: 10.0
+          raytrace_min_range: 0.0
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        enabled: true
+
+        cost_scaling_factor: 3.0
+        # ★ 2026-09-22 롤백: 낮췄더니 로봇이 박았다(실측). 전역 계획이 벽에
+        #   붙는 경로를 그리면 지역이 다 못 잡아낸다. 원래 값으로 되돌린다.
+        #   여기를 다시 낮추려면 지도(simple_factory_layout.png)가 실제 씬과
+        #   맞는지부터 확인해라 — 그게 근본 원인이다.
+        inflation_radius: 0.8
+
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      use_sim_time: true
+
+      global_frame: "map"
+      robot_base_frame: "base_link"
+
+      update_frequency: 1.0
+      publish_frequency: 1.0
+
+      resolution: 0.05
+
+      transform_tolerance: 0.3
+
+      footprint: "[ [0.14, 0.25], [0.14, -0.25], [-0.607, -0.25], [-0.607, 0.25] ]"
+      # ★ 2026-09-22 롤백: 낮췄더니 로봇이 박았다(실측). 전역 계획이 벽에
+      #   붙는 경로를 그리면 지역이 다 못 잡아낸다. 원래 값으로 되돌린다.
+      #   여기를 다시 낮추려면 지도(simple_factory_layout.png)가 실제 씬과
+      #   맞는지부터 확인해라 — 그게 근본 원인이다.
+      footprint_padding: 0.25
+
+      always_send_full_costmap: true
+
+      plugins:
+        - static_layer
+        - obstacle_layer
+        - inflation_layer
+
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true
+        enabled: true
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+
+        observation_sources: scan
+
+        scan:
+          topic: "/robot1/scan"
+
+          data_type: "LaserScan"
+
+          clearing: true
+          marking: true
+
+          max_obstacle_height: 2.0
+
+          raytrace_max_range: 10.0
+          raytrace_min_range: 0.0
+
+          obstacle_max_range: 10.0
+          obstacle_min_range: 0.0
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+
+        # ★ 2026-09-22 롤백: 낮췄더니 로봇이 박았다(실측). 전역 계획이 벽에
+        #   붙는 경로를 그리면 지역이 다 못 잡아낸다. 원래 값으로 되돌린다.
+        #   여기를 다시 낮추려면 지도(simple_factory_layout.png)가 실제 씬과
+        #   맞는지부터 확인해라 — 그게 근본 원인이다.
+        cost_scaling_factor: 0.3
+        # ★ 2026-09-22 롤백: 낮췄더니 로봇이 박았다(실측). 전역 계획이 벽에
+        #   붙는 경로를 그리면 지역이 다 못 잡아낸다. 원래 값으로 되돌린다.
+        #   여기를 다시 낮추려면 지도(simple_factory_layout.png)가 실제 씬과
+        #   맞는지부터 확인해라 — 그게 근본 원인이다.
+        inflation_radius: 1.0
+
+  global_costmap_client:
+    ros__parameters:
+      use_sim_time: true
+
+  global_costmap_rclcpp_node:
+    ros__parameters:
+      use_sim_time: true
+
+
+map_server:
+  ros__parameters:
+    use_sim_time: true
+
+    # 실제 map 경로는 launch 파일에서 넣음
+    yaml_filename: ""
+
+
+map_saver:
+  ros__parameters:
+    use_sim_time: true
+
+    save_map_timeout: 5000
+    free_thresh_default: 0.25
+    occupied_thresh_default: 0.65
+    map_subscribe_transient_local: true
+
+
+planner_server:
+  ros__parameters:
+    use_sim_time: true
+
+    expected_planner_frequency: 10.0
+
+    planner_plugins:
+      - GridBased
+
+    GridBased:
+      plugin: "nav2_navfn_planner::NavfnPlanner"
+
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+
+
+planner_server_rclcpp_node:
+  ros__parameters:
+    use_sim_time: true
+
+
+smoother_server:
+  ros__parameters:
+    use_sim_time: true
+
+    smoother_plugins:
+      - simple_smoother
+
+    simple_smoother:
+      plugin: "nav2_smoother::SimpleSmoother"
+
+      tolerance: 1.0e-10
+      max_its: 1000
+      do_refinement: true
+
+
+behavior_server:
+  ros__parameters:
+    use_sim_time: true
+
+    costmap_topic: "local_costmap/costmap_raw"
+    footprint_topic: "local_costmap/published_footprint"
+
+    cycle_frequency: 5.0
+
+    behavior_plugins:
+      - spin
+      - backup
+      - drive_on_heading
+      - wait
+
+    spin:
+      plugin: "nav2_behaviors::Spin"
+
+    backup:
+      plugin: "nav2_behaviors::BackUp"
+
+    drive_on_heading:
+      plugin: "nav2_behaviors::DriveOnHeading"
+
+    wait:
+      plugin: "nav2_behaviors::Wait"
+
+    global_frame: "odom"
+    robot_base_frame: "base_link"
+
+    transform_tolerance: 0.2
+
+    simulate_ahead_time: 2.0
+
+    max_rotational_vel: 1.2
+    min_rotational_vel: 0.4
+    rotational_acc_lim: 3.2
+
+
+waypoint_follower:
+  ros__parameters:
+    use_sim_time: true
+
+    loop_rate: 20
+    stop_on_failure: false
+
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+
+      enabled: true
+      waypoint_pause_duration: 200
+
+
+velocity_smoother:
+  ros__parameters:
+    use_sim_time: true
+
+    smoothing_frequency: 20.0
+
+    scale_velocities: false
+    feedback: "OPEN_LOOP"
+
+    # FollowPath(DWB) 의 max_vel_x/theta·acc_lim 값과 맞춰서 낮췄다 — 여기만
+    # 낮추면 DWB 가 고른 빠른 궤적을 이 스무더가 뒤늦게 깎아내리면서 오히려
+    # 더 덜컹거린다(원인 그대로: 몸이 흔들리며 움직임). 두 레이어를 같은
+    # 값으로 맞춰야 매끄럽다.
+    max_velocity:
+      - 0.25
+      - 0.0
+      - 0.3
+
+    min_velocity:
+      - -0.25
+      - 0.0
+      - -0.3
+
+    max_accel:
+      - 0.4
+      - 0.0
+      - 0.8
+
+    max_decel:
+      - -0.4
+      - 0.0
+      - -0.8
+
+    velocity_timeout: 1.0
+
+    # namespace 적용 후:
+    # /robot1/chassis/odom
+    odom_topic: "chassis/odom"
+
+    odom_duration: 0.1

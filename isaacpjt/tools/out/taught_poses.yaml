@@ -1,0 +1,377 @@
+stack_shelf:
+  base_waypoint: pkg_out_pick
+  base_link_world:
+  - 3.59807
+  - 0.97085
+  - 0.0
+  base_link_quat_wxyz:
+  - 0.999971
+  - -5.0e-06
+  - -0.00079
+  - -0.007532
+  m0609_base_world:
+  - 3.39073
+  - 0.97398
+  - 0.54887
+  joints:
+    joint_1: 90.0051
+    joint_2: 54.9956
+    joint_3: 129.9982
+    joint_4: -89.9994
+    joint_5: 90.0001
+    joint_6: 89.9994
+  joints_deg:
+  - 90.0051
+  - 54.9956
+  - 129.9982
+  - -89.9994
+  - 90.0001
+  - 89.9994
+  joints_rad:
+  - 1.570885
+  - 0.959854
+  - 2.268897
+  - -1.570785
+  - 1.570798
+  - 1.570786
+  tool0_world:
+  - 3.51016
+  - 1.27674
+  - 0.55278
+  tool0_quat_wxyz:
+  - -0.474185
+  - 0.517308
+  - -0.481048
+  - 0.525485
+  camera_optical_world:
+  - 3.54496
+  - 1.26869
+  - 0.59867
+  qr_in_view: []
+  captured_at: '2026-09-25 22:52:26'
+shelf_1_top_scan:
+  base_waypoint: shelf_1
+  base_link_world:
+  - -6.49668
+  - 0.5849
+  - 0.0
+  base_link_quat_wxyz:
+  - 0.999997
+  - -2.0e-06
+  - -0.000789
+  - -0.002312
+  m0609_base_world:
+  - -6.70403
+  - 0.58586
+  - 0.54887
+  joints:
+    joint_1: 24.9823
+    joint_2: 35.0063
+    joint_3: 149.9983
+    joint_4: 89.9996
+    joint_5: 89.9997
+    joint_6: 90.0006
+  joints_deg:
+  - 24.9823
+  - 35.0063
+  - 149.9983
+  - 89.9996
+  - 89.9997
+  - 90.0006
+  joints_rad:
+  - 0.436023
+  - 0.610975
+  - 2.617965
+  - 1.57079
+  - 1.570791
+  - 1.570807
+  tool0_world:
+  - -6.5724
+  - 0.78651
+  - 0.65359
+  tool0_quat_wxyz:
+  - -0.683219
+  - 0.696952
+  - 0.121608
+  - -0.180781
+  camera_optical_world:
+  - -6.57314
+  - 0.82476
+  - 0.69739
+  qr_in_view:
+  - name: shelf_1/top/magazine_1_orange:qr_label_ny
+    dist_m: 1.1051
+    px: 28.7
+    uv:
+    - 920.9
+    - 349.1
+  - name: shelf_1/bottom/magazine_2_blue:qr_label_ny
+    dist_m: 1.1372
+    px: 27.9
+    uv:
+    - 922.2
+    - 571.4
+  captured_at: '2026-09-17 14:46:52'
+packaging_output_scan:
+  base_waypoint: packaging_output
+  base_link_world:
+  - 3.45786
+  - 1.70424
+  - -0.0
+  base_link_quat_wxyz:
+  - 0.999774
+  - 1.6e-05
+  - -0.000786
+  - 0.021261
+  m0609_base_world:
+  - 3.25069
+  - 1.69542
+  - 0.54888
+  joints:
+    joint_1: -92.9833
+    joint_2: 58.0156
+    joint_3: 120.497
+    joint_4: 90.4982
+    joint_5: 89.9996
+    joint_6: 90.9994
+  joints_deg:
+  - -92.9833
+  - 58.0156
+  - 120.497
+  - 90.4982
+  - 89.9996
+  - 90.9994
+  joints_rad:
+  - -1.622864
+  - 1.012564
+  - 2.10307
+  - 1.579492
+  - 1.570789
+  - 1.588239
+  tool0_world:
+  - 3.37438
+  - 1.33507
+  - 0.53335
+  tool0_quat_wxyz:
+  - -0.493628
+  - 0.497198
+  - -0.502103
+  - 0.506969
+  camera_optical_world:
+  - 3.40912
+  - 1.3233
+  - 0.57849
+  qr_in_view: []
+  captured_at: '2026-09-22 14:53:13'
+shelf_1_top_close_centered:
+  base_waypoint: shelf_1
+  base_link_world:
+  - -6.49803
+  - 1.45
+  - -0.0
+  base_link_quat_wxyz:
+  - 0.999999
+  - -2.0e-06
+  - -0.000788
+  - -0.00095
+  m0609_base_world:
+  - -6.70539
+  - 1.4504
+  - 0.54887
+  joints:
+    joint_1: 13.4869
+    joint_2: 38.4021
+    joint_3: 149.9981
+    joint_4: 90.5006
+    joint_5: 90.0
+    joint_6: 86.0006
+  joints_deg:
+  - 13.4869
+  - 38.4021
+  - 149.9981
+  - 90.5006
+  - 90.0
+  - 86.0006
+  joints_rad:
+  - 0.235391
+  - 0.670242
+  - 2.617961
+  - 1.579533
+  - 1.570796
+  - 1.500994
+  tool0_world:
+  - -6.53791
+  - 1.62096
+  - 0.64148
+  tool0_quat_wxyz:
+  - -0.698457
+  - 0.705837
+  - 0.052902
+  - -0.105609
+  camera_optical_world:
+  - -6.53126
+  - 1.65848
+  - 0.68542
+  qr_in_view:
+  - name: shelf_1/top/magazine_1_orange:qr_label_ny
+    dist_m: 0.2775
+    px: 114.2
+    uv:
+    - 649.4
+    - 381.9
+  captured_at: '2026-09-17 14:38:39'
+  note: shelf_1_top_scan 을 화면 중앙으로 맞춘 변형. joint_1/joint_2 만 건드렸다. QR 이 uv [649, 382]
+    로 중앙(640, 360) 근처에 온다.
+s1_bottom_scan:
+  base_waypoint: shelf_1
+  base_link_world:
+  - -6.49601
+  - 1.44999
+  - -0.0
+  base_link_quat_wxyz:
+  - 0.999998
+  - -1.0e-06
+  - -0.00079
+  - -0.001938
+  m0609_base_world:
+  - -6.70337
+  - 1.45079
+  - 0.54887
+  joints:
+    joint_1: 10.0024
+    joint_2: 90.0302
+    joint_3: 74.9956
+    joint_4: 59.9862
+    joint_5: 60.0
+    joint_6: 119.9987
+  joints_deg:
+  - 10.0024
+  - 90.0302
+  - 74.9956
+  - 59.9862
+  - 60.0
+  - 119.9987
+  joints_rad:
+  - 0.174575
+  - 1.571323
+  - 1.308921
+  - 1.046956
+  - 1.047198
+  - 2.094373
+  tool0_world:
+  - -6.25516
+  - 1.62615
+  - 0.25633
+  tool0_quat_wxyz:
+  - -0.415924
+  - 0.883383
+  - 0.132551
+  - -0.170508
+  camera_optical_world:
+  - -6.26329
+  - 1.68246
+  - 0.26837
+  qr_in_view: []
+  captured_at: '2026-09-17 15:24:21'
+pkg_out_pick:
+  base_waypoint: pkg_out_pick
+  base_link_world:
+  - 3.53718
+  - 0.52602
+  - 0.0
+  base_link_quat_wxyz:
+  - 0.749942
+  - -0.000526
+  - -0.000597
+  - -0.661503
+  m0609_base_world:
+  - 3.51129
+  - 0.73177
+  - 0.54887
+  joints:
+    joint_1: -179.9989
+    joint_2: 35.5247
+    joint_3: 111.4977
+    joint_4: -74.5018
+    joint_5: 73.5002
+    joint_6: 55.5003
+  joints_deg:
+  - -179.9989
+  - 35.5247
+  - 111.4977
+  - -74.5018
+  - 73.5002
+  - 55.5003
+  joints_rad:
+  - -3.141573
+  - 0.620024
+  - 1.946001
+  - -1.300301
+  - 1.28282
+  - 0.968663
+  tool0_world:
+  - 3.56224
+  - 1.17347
+  - 0.66277
+  tool0_quat_wxyz:
+  - -0.4057
+  - 0.604392
+  - -0.568594
+  - 0.38317
+  camera_optical_world:
+  - 3.61223
+  - 1.16499
+  - 0.69126
+  qr_in_view: []
+  captured_at: '2026-09-25 23:17:17'
+pkg_out_scan:
+  base_waypoint: pkg_out_scan
+  base_link_world:
+  - 3.29309
+  - 2.45428
+  - 0.0
+  base_link_quat_wxyz:
+  - 0.750558
+  - -0.000523
+  - -0.000594
+  - -0.660804
+  m0609_base_world:
+  - 3.26682
+  - 2.65997
+  - 0.54887
+  joints:
+    joint_1: 0.0045
+    joint_2: 120.0819
+    joint_3: -29.996
+    joint_4: 90.0
+    joint_5: 89.9998
+    joint_6: 165.0012
+  joints_deg:
+  - 0.0045
+  - 120.0819
+  - -29.996
+  - 90.0
+  - 89.9998
+  - 165.0012
+  joints_rad:
+  - 7.8e-05
+  - 2.095825
+  - -0.523528
+  - 1.570796
+  - 1.570793
+  - 2.879814
+  tool0_world:
+  - 3.48455
+  - 1.9581
+  - 0.47786
+  tool0_quat_wxyz:
+  - -0.464996
+  - 0.58724
+  - -0.394148
+  - 0.532518
+  camera_optical_world:
+  - 3.51923
+  - 1.96306
+  - 0.52429
+  qr_in_view: []
+  captured_at: '2026-09-26 18:04:32'
